@@ -1,0 +1,8 @@
+{
+  "name": "FoodAI Coach",
+  "description": "O teu assistente pessoal de nutrição e fitness alimentado por IA. Tira fotos às refeições, analisa calorias e recebe planos de treino personalizados.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

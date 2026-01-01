@@ -1,8 +1,5 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { FoodAnalysisResult, WeeklyPlan, UserProfile, DailyPlan, Language, DiaryEntry, DailyAnalysisResult } from "../types";
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const getLangContext = (lang: Language) => {
   switch(lang) {
@@ -17,6 +14,7 @@ const getLangContext = (lang: Language) => {
 
 export const analyzeFoodImage = async (base64Image: string, language: Language, userNote?: string): Promise<FoodAnalysisResult> => {
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const cleanBase64 = base64Image.replace(/^data:image\/(png|jpg|jpeg|webp);base64,/, "");
     const langContext = getLangContext(language);
     
@@ -72,6 +70,7 @@ export const analyzeFoodImage = async (base64Image: string, language: Language, 
 
 export const analyzeFoodText = async (textDescription: string, language: Language): Promise<FoodAnalysisResult> => {
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const langContext = getLangContext(language);
     
     const response = await ai.models.generateContent({
@@ -117,6 +116,7 @@ export const generateWeeklyPlanAI = async (
   preferences: { mealsPerDay: number, budget: string, pantry: string, pantryImages?: string[] }
 ): Promise<WeeklyPlan> => {
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const langContext = getLangContext(profile.language);
     const prompt = `You are a nutritionist. You MUST respond ONLY in ${langContext}. 
     Create a weekly meal plan (7 days) for the goal: ${profile.goal}.
@@ -190,6 +190,7 @@ export const generateWeeklyPlanAI = async (
 
 export const analyzeDailyIntake = async (user: UserProfile, entries: DiaryEntry[]): Promise<DailyAnalysisResult> => {
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const langContext = getLangContext(user.language);
     const prompt = `Act as a nutrition coach. You MUST respond exclusively in ${langContext}.
     Review the following food log for today and provide feedback in JSON.
@@ -222,9 +223,9 @@ export const analyzeDailyIntake = async (user: UserProfile, entries: DiaryEntry[
   }
 };
 
-// Fix for components/DailyPlan.tsx error: Implement and export generateDailyPlan
 export const generateDailyPlan = async (user: UserProfile): Promise<DailyPlan> => {
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const langContext = getLangContext(user.language);
     const prompt = `You are a professional nutrition and fitness coach. You MUST respond exclusively in ${langContext}.
     Create a detailed daily plan (meals and workout) based on the user profile below.
